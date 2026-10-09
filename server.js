@@ -69,4 +69,5 @@ const server=http.createServer(async(req,res)=>{
  return send(404,{error:'Not found'});
  }catch(e){console.error('Request failed:',e.status||500);send(e.status||500,{error:e.status?e.message:'Something went wrong. Please try again.'});}
 });
-server.listen(Number(process.env.PORT||3000),process.env.HOST||(process.env.VERCEL?'0.0.0.0':'127.0.0.1'),()=>console.log(`Bebin Dev Studio running at http://127.0.0.1:${process.env.PORT||3000}`));
+export default server;
+if(!process.env.VERCEL)server.listen(Number(process.env.PORT||3000),process.env.HOST||'127.0.0.1',()=>console.log(`Bebin Dev Studio running at http://127.0.0.1:${process.env.PORT||3000}`));
