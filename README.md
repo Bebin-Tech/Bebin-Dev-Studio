@@ -4,9 +4,10 @@ A local website creation workspace with private accounts, saved projects and ver
 
 ## Run
 
-Use Node.js 24 or later. No third-party dependencies are required.
+Use Node.js 24. Install the locked dependencies before starting.
 
 ```sh
+npm ci
 node server.js
 ```
 
@@ -24,7 +25,7 @@ Light, Dark and Aurora themes persist in the account and a local preference for 
 
 20 individually authored source projects cover 20 industries and 16 design styles. The old palette variants were retired. Every entry owns a distinct DOM composition, custom layout CSS and domain-specific vector illustration. Each entry has an actual rendered screenshot, isolated preview and complete downloadable ZIP. Downloads include HTML, CSS, JavaScript, SVG assets, package scripts, README, a Node backend and SQLite storage for submissions and accounts. Shopping carts, filters, task tools and reading lists run locally. Contact submissions are saved locally; payments and email delivery are not connected. Admin tasks are browser-local and scoped by account, rather than a cloud-synced task service.
 
-`lib/designs.js` defines individually authored layouts, styles and vector artwork. `lib/catalog.js` provides their metadata. `lib/catalog-integrity.js` rejects duplicate DOM structures even when text or colors change, and rejects duplicated artwork or design source. `lib/templates.js` renders the category-specific projects. Metadata is mirrored into SQLite; the current 20-item collection is filtered from its manifest and paginated. Sources generate only when requested. Large-scale search should move all facets to indexed database queries before scaling. To expand the library, author a new composition and meaningful interaction, provide unique artwork, capture a 1280×760 browser screenshot, update its source/image hashes in public/screenshots/manifest.json, then run all tests. Cosmetic layout clones are rejected during server startup. Stale or duplicate previews fail tests. The application currently contains 20 distinct templates. Industry, project type, framework, style and functionality filters are combined with search. All current exports use HTML/CSS/JavaScript and Node, the framework option reflects that actual stack. Larger catalog scale has not been load-tested.
+`lib/designs.js` defines individually authored layouts, styles and vector artwork. `lib/catalog.js` provides their metadata. `lib/catalog-integrity.js` rejects duplicate DOM structures even when text or colors change, and rejects duplicated artwork or design source. `lib/templates.js` renders the category-specific projects. The current 20-item collection is filtered from its manifest and paginated. Sources generate only when requested. Large-scale search should move all facets to indexed database queries before scaling. To expand the library, author a new composition and meaningful interaction, provide unique artwork, capture a 1280×760 browser screenshot, update its source/image hashes in public/screenshots/manifest.json, then run all tests. Cosmetic layout clones are rejected during server startup. Stale or duplicate previews fail tests. The application currently contains 20 distinct templates. Industry, project type, framework, style and functionality filters are combined with search. All current exports use HTML/CSS/JavaScript and Node, the framework option reflects that actual stack. Larger catalog scale has not been load-tested.
 
 ## Validation
 
@@ -48,4 +49,5 @@ The live Groq connection, enhancement and HTML generation passed on October 9, 2
 
 ## Hosting status
 
-No deployment has been performed. The server binds to loopback for local use. Docker configuration is prepared only. Before worldwide hosting, configure HTTPS, operational monitoring, backups, email/password recovery, distributed persistence and abuse controls appropriate to the target infrastructure. SQLite and process-local limits currently suit a single-server installation; multi-region scale is not verified.
+Vercel uses the Node application preset and Node 24. Configure TURSO_DATABASE_URL and TURSO_AUTH_TOKEN as server-only environment variables for persistent accounts, sessions, projects and versions. The app refuses to start on Vercel without remote storage. Local installations retain SQLite. Atomic writes and database-backed auth/AI limits work across instances. AI usage is limited to 40 requests per user and 200 globally per day. Configure GROQ_API_KEY and optionally GROQ_MODEL on the server. Never use NEXT_PUBLIC_ or VITE_ prefixes for credentials. The health endpoint /api/health checks database access without exposing credentials. Operational monitoring, backups, verified email/password recovery and large-scale load testing remain production follow-ups.
+
