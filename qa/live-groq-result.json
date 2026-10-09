@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-09T12:17:20.941Z",
+  "provider": "Groq",
+  "model": "openai/gpt-oss-20b",
+  "enhancementEngine": "Groq",
+  "projectId": "cfae04e24fe2e7914439ff3076a9d125",
+  "bytes": 7521,
+  "inlineScripts": 1,
+  "syntaxChecked": true
+}

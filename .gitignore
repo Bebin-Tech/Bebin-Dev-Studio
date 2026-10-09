@@ -1,0 +1,9 @@
+data/
+.env
+.env.*
+!.env.example
+node_modules/
+qa/downloads/
+public/screenshots/*-editorial.jpg
+public/screenshots/*-midnight.jpg
+public/screenshots/*-vivid.jpg

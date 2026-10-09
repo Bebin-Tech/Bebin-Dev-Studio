@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bebin Dev Studio – Landing Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --primary:#2e8b57; /* forest green */
+  --accent:#fdf6e3; /* ivory */
+  --text:#222;
+  --font-sans:"Helvetica Neue",Arial,sans-serif;
+  --font-serif:"Georgia",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--font-sans);
+  line-height:1.6;
+  color:var(--text);
+  background:var(--accent);
+}
+header{
+  background:var(--primary);
+  color:white;
+  padding:1rem 2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+header h1{font-size:1.5rem;}
+nav ul{list-style:none;display:flex;gap:1rem;}
+nav a{
+  color:white;
+  text-decoration:none;
+  font-weight:600;
+}
+nav a:hover{opacity:.8;}
+.menu-toggle{
+  display:none;
+  background:none;
+  border:none;
+  color:white;
+  font-size:1.5rem;
+}
+@media(max-width:768px){
+  nav{display:none;flex-direction:column;background:var(--primary);position:absolute;top:100%;left:0;width:100%;}
+  nav.show{display:flex;}
+  .menu-toggle{display:block;}
+}
+main{padding:2rem;}
+section{margin-bottom:4rem;}
+h2{font-family:var(--font-serif);margin-bottom:.5rem;}
+.hero{
+  background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="800" height="400" fill="%232e8b57"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="48" fill="%23fdf6e3" font-family="Helvetica%20Neue,Arial,sans-serif">Bebin Dev Studio</text></svg>') no-repeat center/cover;
+  color:white;
+  height:400px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.hero h2{font-size:3rem;margin-bottom:.5rem;}
+.hero p{font-size:1.2rem;}
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;}
+.card{
+  background:white;
+  padding:1.5rem;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+  transition:transform .2s;
+}
+.card:hover{transform:translateY(-5px);}
+.card h3{margin-bottom:.75rem;}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+}
+.gallery img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:6px;
+}
+.faq{max-width:800px;margin:auto;}
+.faq-item{border-bottom:1px solid #ccc;padding:.5rem 0;}
+.faq-question{
+  background:none;border:none;font-size:1rem;text-align:left;width:100%;color:var(--primary);font-weight:600;cursor:pointer;
+}
+.faq-answer{display:none;padding-top:.5rem;color:#555;}
+.faq-item.open .faq-answer{display:block;}
+form{
+  display:grid;
+  gap:1rem;
+  max-width:600px;
+  margin:auto;
+}
+form label{font-weight:600;}
+form input,form textarea{
+  width:100%;
+  padding:.75rem;
+  border:1px solid #ccc;
+  border-radius:4px;
+}
+form button{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:.75rem 1.5rem;
+  font-size:1rem;
+  cursor:pointer;
+  border-radius:4px;
+}
+form button:hover{opacity:.9;}
+footer{
+  text-align:center;
+  padding:1rem;
+  background:var(--primary);
+  color:white;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Bebin Dev Studio</h1>
+  <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">&#9776;</button>
+  <nav id="nav-menu" aria-label="Main navigation">
+    <ul>
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <section id="hero" class="hero">
+    <h2>Crafting Digital Experiences</h2>
+    <p>Innovative solutions for modern businesses.</p>
+  </section>
+
+  <section id="services">
+    <h2>What We Do</h2>
+    <div class="services">
+      <div class="card">
+        <h3>Web Development</h3>
+        <p>Responsive, performant websites built with modern tech.</p>
+      </div>
+      <div class="card">
+        <h3>UI/UX Design</h3>
+        <p>Intuitive interfaces that delight users and drive results.</p>
+      </div>
+      <div class="card">
+        <h3>Consulting</h3>
+        <p>Strategic guidance to align tech with business goals.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2>Project Gallery</h2>
+    <div class="gallery">
+      <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='150'><rect width='200' height='150' fill='%23c5e1a5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='16' fill='%232e8b57'>Project 1</text></svg>" alt="Project 1">
+      <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='150'><rect width='200' height='150' fill='%23a5d6a7'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='16' fill='%232e8b57'>Project 2</text></svg>" alt="Project 2">
+      <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='150'><rect width='200' height='150' fill='%23b9f6ca'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='16' fill='%232e8b57'>Project 3</text></svg>" alt="Project 3">
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">What is your development process?</button>
+      <div class="faq-answer" role="region">
+        <p>We follow an agile methodology, iterating quickly with client feedback.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">How long does a project take?</button>
+      <div class="faq-answer" role="region">
+        <p>Project timelines vary; we provide estimates after initial scoping.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">Do you offer maintenance?</button>
+      <div class="faq-answer" role="region">
+        <p>Yes, we provide ongoing support and maintenance packages.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Get in Touch</h2>
+    <form id="contact-form" novalidate>
+      <label for="name">Name</label>
+      <input type="text" id="name" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+      <label for="message">Message</label>
+      <textarea id="message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2026 Bebin Dev Studio. All rights reserved.</p>
+</footer>
+
+<script>
+document.querySelector('.menu-toggle').addEventListener('click', function(){
+  const nav = document.getElementById('nav-menu');
+  const expanded = this.getAttribute('aria-expanded') === 'true';
+  this.setAttribute('aria-expanded', !expanded);
+  nav.classList.toggle('show');
+});
+
+document.querySelectorAll('.faq-question').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const item = btn.parentElement;
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !expanded);
+    item.classList.toggle('open');
+  });
+});
+
+document.getElementById('contact-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  alert('Thank you! Your message has been sent.');
+  this.reset();
+});
+</script>
+</body>
+</html>
