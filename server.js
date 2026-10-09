@@ -51,7 +51,7 @@ const server=http.createServer(async(req,res)=>{
  if(req.method==='POST'&&process.env.GROQ_API_KEY&&(['/api/enhance','/api/ai/test'].includes(url.pathname)||(url.pathname==='/api/generate'&&body.mode==='ai'))){await consumeUsage(db,'ai-user:'+user.id,40,86400000);await consumeUsage(db,'ai-global',200,86400000);}
 
  if(url.pathname==='/api/me')return send(200,{user:{name:user.name,email:user.email,locale:user.locale,theme:user.theme},aiAvailable:!!process.env.GROQ_API_KEY,aiProvider:"Groq",aiModel:process.env.GROQ_MODEL||"openai/gpt-oss-20b"});
- if(url.pathname==='/api/logout'&&req.method==='POST'){await db.prepare('DELETE FROM sessions WHERE token=?').run(hash);res.setHeader('Set-Cookie','session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return send(200,{ok:true});}
+ if(url.pathname==='/api/logout'&&req.method==='POST'){await db.prepare('DELETE FROM sessions WHERE token=?').run(hash);res.setHeader('Set-Cookie','session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'+(process.env.NODE_ENV==='production'?'; Secure':''));return send(200,{ok:true});}
  if(url.pathname==='/api/settings'&&req.method==='PATCH'){if(body.locale!==undefined&&!['en','es','fr','hi','ar'].includes(body.locale))return send(400,{error:'Unsupported language'});if(body.theme!==undefined&&!['light','dark','aurora'].includes(body.theme))return send(400,{error:'Unsupported theme'});await db.prepare('UPDATE users SET locale=?,theme=? WHERE id=?').run(body.locale||user.locale,body.theme||user.theme,user.id);return send(200,{ok:true});}
  if(url.pathname==='/api/ai/test'&&req.method==='POST'){const result=await groqComplete('Return the words: Bebin integration ready',{enhance:true});return send(200,{ok:!!result,provider:'Groq',model:process.env.GROQ_MODEL||'openai/gpt-oss-20b'});}
  if(url.pathname==='/api/enhance'&&req.method==='POST'){const prompt=String(body.prompt||'').trim();if(prompt.length<12||prompt.length>4000)return send(400,{error:'Use a brief of 12–4000 characters'});const enhanced=process.env.GROQ_API_KEY?await groqComplete(prompt,{enhance:true}):prompt+' Use a responsive layout, accessible contrast, clear navigation, working local interactions, and a refined visual hierarchy.';return send(200,{prompt:enhanced.slice(0,4000),engine:process.env.GROQ_API_KEY?'Groq':'Local'});}
@@ -71,3 +71,4 @@ const server=http.createServer(async(req,res)=>{
 });
 export default server;
 if(!process.env.VERCEL)server.listen(Number(process.env.PORT||3000),process.env.HOST||'127.0.0.1',()=>console.log(`Bebin Dev Studio running at http://127.0.0.1:${process.env.PORT||3000}`));
+

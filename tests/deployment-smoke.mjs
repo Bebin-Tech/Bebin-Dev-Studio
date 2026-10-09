@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import {randomBytes} from 'node:crypto';
+import {writeFileSync} from 'node:fs';
+const base=process.env.STUDIO_DEPLOYMENT_URL;
+if(!base?.startsWith('https://'))throw Error('Set STUDIO_DEPLOYMENT_URL to the approved live application.');
+const email=`deployment-${Date.now()}@example.com`,password=randomBytes(24).toString('hex');let cookie='';
+async function api(route,method='GET',body){const res=await fetch(base+'/api'+route,{method,headers:{Cookie:cookie,'Content-Type':'application/json',Origin:base},body:body?JSON.stringify(body):undefined});const data=await res.json();assert.equal(res.status,200,JSON.stringify(data));if(res.headers.has('set-cookie')){assert.match(res.headers.get('set-cookie'),/HttpOnly/);assert.match(res.headers.get('set-cookie'),/Secure/);cookie=res.headers.get('set-cookie').split(';')[0];}return data;}
+assert.equal((await api('/health')).database,'libsql');
+await api('/register','POST',{email,password,name:'Deployment QA'});
+await api('/settings','PATCH',{theme:'aurora',locale:'en'});
+assert.equal((await api('/me')).user.theme,'aurora');
+const catalog=await api('/templates');assert.equal(catalog.total,20);
+assert.equal((await api('/templates?industry=finance&feature=expense%20tracker')).items[0].id,'ledger');
+const preview=await fetch(base+'/api/templates/horizon/preview',{headers:{Cookie:cookie}});assert.equal(preview.status,200);assert.match(await preview.text(),/Horizon Learning/);
+const download=await fetch(base+'/api/templates/horizon/download',{headers:{Cookie:cookie}});assert.equal(download.status,200);const bytes=new Uint8Array(await download.arrayBuffer());assert.deepEqual([...bytes.slice(0,2)],[80,75]);
+const project=await api('/generate','POST',{prompt:'Create a responsive travel website with accessible navigation',name:'Deployment persistence check',type:'landing page'});
+assert.equal((await api('/projects/'+project.id+'/versions')).length,1);
+await api('/logout','POST');cookie='';await api('/login','POST',{email,password});
+assert.equal((await api('/projects/'+project.id)).name,'Deployment persistence check');
+const groq=await api('/ai/test','POST');assert.equal(groq.ok,true);
+const enhanced=await api('/enhance','POST',{prompt:'A professional international travel platform with destination search and accessible responsive navigation'});assert.equal(enhanced.engine,'Groq');
+for(const route of ['/.env','/lib/groq.js'])assert.equal((await fetch(base+route)).status,404);
+await api('/logout','POST');
+const report={checkedAt:new Date().toISOString(),url:base,database:'libsql',catalogCount:20,registration:true,secureCookie:true,login:true,persistence:true,theme:true,filter:true,preview:true,downloadBytes:bytes.length,groq:groq.ok,enhancement:true,credentialIsolation:true};
+writeFileSync('qa/deployment-smoke.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
