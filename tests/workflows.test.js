@@ -8,6 +8,12 @@ const dir=mkdtempSync(path.join(tmpdir(),'atlas-test-'));let proc,cookie='',othe
 async function call(route,method='GET',body,session=cookie){const r=await fetch(base+'/api'+route,{method,headers:{'Content-Type':'application/json',Cookie:session},body:body?JSON.stringify(body):undefined});return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};}
 before(async()=>{proc=spawn(process.execPath,['server.js'],{env:{...process.env,PORT:'3099',DATA_DIR:dir,GROQ_API_KEY:''},stdio:['ignore','pipe','pipe']});await new Promise((resolve,reject)=>{proc.stdout.once('data',resolve);proc.once('error',reject);proc.once('exit',code=>reject(Error('Server exited '+code)));});});
 after(()=>{proc.kill();setTimeout(()=>rmSync(dir,{recursive:true,force:true}),500).unref();});
+test('coding video supports browser byte ranges without exposing arbitrary files',async()=>{
+ const full=await fetch(base+'/coding-process.mp4');assert.equal(full.status,200);assert.equal(full.headers.get('content-type'),'video/mp4');const bytes=new Uint8Array(await full.arrayBuffer());
+ const range=await fetch(base+'/coding-process.mp4',{headers:{Range:'bytes=0-31'}});assert.equal(range.status,206);assert.equal(range.headers.get('content-range'),`bytes 0-31/${bytes.length}`);assert.deepEqual(new Uint8Array(await range.arrayBuffer()),bytes.slice(0,32));
+ assert.equal((await fetch(base+'/coding-process.mp4',{headers:{Range:'bytes=99999999-'}})).status,416);
+ assert.equal((await fetch(base+'/coding-process-poster.jpg')).status,200);
+});
 test('complete lifecycle, validation, account isolation, versions and export',async()=>{
  assert.equal((await call('/projects')).status,401);
  assert.equal((await call('/register','POST',{email:'bad',password:'short'})).status,400);

@@ -3,3 +3,6 @@
 @media(max-width:1050px) and (min-width:651px){.authstory{padding:25px 18px}.dev-code{font-size:8px}.dev-gutter{margin-right:10px}.dev-tab-right{display:none}.dev-bottom{grid-template-columns:1fr}.dev-preview{display:none}.dev-workbench{min-height:260px}.dev-terminal{min-height:155px}}
 @media(max-width:650px){.authstory{display:block;order:2;padding:30px 22px}.coding-scene{max-width:460px}.coding-caption h2{font-size:30px}.coding-caption{margin-bottom:22px}.dev-code{font-size:8px}.dev-workbench{padding-left:7px}.dev-gutter{margin-right:10px}.dev-title{font-size:8px}.dev-branch,.dev-tab-right{display:none}.dev-terminal{font-size:8px;padding:12px 9px}.mini-site h3{font-size:13px}.coding-footnote{font-size:7px}.authform{min-height:100svh}}
 @media(prefers-reduced-motion:reduce){.code-line{width:100%;animation:none}.terminal-line{opacity:1;animation:none}.mini-site{opacity:1;transform:none;animation:none}.code-cursor,.terminal-line i{animation:none}}
+
+.coding-video-frame{aspect-ratio:48/41;width:100%;overflow:hidden;border:1px solid #314156;border-radius:12px;background:#101925 url(/coding-process-poster.jpg) center/cover no-repeat;box-shadow:0 30px 70px #0005}.coding-video{display:block;width:100%;height:100%;object-fit:contain}.coding-video[hidden]{display:none}
+
