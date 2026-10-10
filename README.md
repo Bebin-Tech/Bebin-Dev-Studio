@@ -11,7 +11,7 @@ npm ci
 node server.js
 ```
 
-Open http://127.0.0.1:3000 and create an account. Data persists in `data/studio.sqlite`.
+Configure Google or email sign-in using [AUTH_SETUP.md](AUTH_SETUP.md), then open http://127.0.0.1:3000. New accounts are created after identity verification. Data persists in `data/studio.sqlite`.
 
 ## Groq
 
@@ -39,7 +39,7 @@ The suite extracts, builds, tests and launches all 20 source archives and exerci
 
 Optional live integration test with the local QA account and a configured key:
 
-Set `STUDIO_TEST_EMAIL` and `STUDIO_TEST_PASSWORD` in your shell to an existing local test account. Test credentials are not bundled.
+This legacy local QA helper requires `AUTH_LEGACY_PASSWORD=true` on a non-production local server and `STUDIO_TEST_EMAIL` / `STUDIO_TEST_PASSWORD` for an existing local test account. Never enable legacy authentication on production. Test credentials are not bundled.
 
 ```sh
 node tests/live-groq.mjs

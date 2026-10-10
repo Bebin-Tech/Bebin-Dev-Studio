@@ -6,7 +6,7 @@ import {tmpdir} from 'node:os';
 import path from 'node:path';
 const dir=mkdtempSync(path.join(tmpdir(),'atlas-test-'));let proc,cookie='',other='';const base='http://127.0.0.1:3099';
 async function call(route,method='GET',body,session=cookie){const r=await fetch(base+'/api'+route,{method,headers:{'Content-Type':'application/json',Cookie:session},body:body?JSON.stringify(body):undefined});return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};}
-before(async()=>{proc=spawn(process.execPath,['server.js'],{env:{...process.env,PORT:'3099',DATA_DIR:dir,GROQ_API_KEY:''},stdio:['ignore','pipe','pipe']});await new Promise((resolve,reject)=>{proc.stdout.once('data',resolve);proc.once('error',reject);proc.once('exit',code=>reject(Error('Server exited '+code)));});});
+before(async()=>{proc=spawn(process.execPath,['server.js'],{env:{...process.env,AUTH_LEGACY_PASSWORD:'true',PORT:'3099',DATA_DIR:dir,GROQ_API_KEY:''},stdio:['ignore','pipe','pipe']});await new Promise((resolve,reject)=>{proc.stdout.once('data',resolve);proc.once('error',reject);proc.once('exit',code=>reject(Error('Server exited '+code)));});});
 after(()=>{proc.kill();setTimeout(()=>rmSync(dir,{recursive:true,force:true}),500).unref();});
 test('coding video supports browser byte ranges without exposing arbitrary files',async()=>{
  const full=await fetch(base+'/coding-process.mp4');assert.equal(full.status,200);assert.equal(full.headers.get('content-type'),'video/mp4');const bytes=new Uint8Array(await full.arrayBuffer());
@@ -22,7 +22,7 @@ test('complete lifecycle, validation, account isolation, versions and export',as
  assert.equal((await call('/login','POST',{email:'creator@example.com',password:'WrongPassword123'})).status,401);
  assert.equal((await call('/generate','POST',{prompt:'short'})).status,400);
  const created=await call('/generate','POST',{prompt:'Create a global coffee storefront with a product collection',type:'storefront',name:'Coffee'});assert.equal(created.status,200);assert.match(created.data.html,/Add to selection/);const pid=created.data.id;
- const second=await call('/register','POST',{email:'other@example.com',password:'LongPassword123!'});other=second.cookie;assert.equal((await call('/projects/'+pid,'GET',null,other)).status,404);assert.equal((await call('/projects/'+pid,'DELETE',null,other)).status,404);
+ const second=await call('/register','POST',{email:'other@example.com',password:'LongPassword123!'},'');other=second.cookie;assert.equal((await call('/projects/'+pid,'GET',null,other)).status,404);assert.equal((await call('/projects/'+pid,'DELETE',null,other)).status,404);
  assert.equal((await call('/projects/'+pid,'PATCH',{name:'Coffee worldwide',favorite:true})).status,200);
  let list=await call('/projects');assert.equal(list.data.length,1);assert.equal(list.data[0].favorite,1);assert.equal(list.data[0].name,'Coffee worldwide');
  await call('/generate','POST',{projectId:pid,prompt:'Refine this coffee website with a sustainability story',type:'storefront'});
@@ -52,7 +52,7 @@ test('complete lifecycle, validation, account isolation, versions and export',as
 });
 test('account and project data survive a server restart',async()=>{
  const exit=new Promise(resolve=>proc.once('exit',resolve));proc.kill();await exit;
- proc=spawn(process.execPath,['server.js'],{env:{...process.env,PORT:'3099',DATA_DIR:dir,GROQ_API_KEY:''},stdio:['ignore','pipe','pipe']});
+ proc=spawn(process.execPath,['server.js'],{env:{...process.env,AUTH_LEGACY_PASSWORD:'true',PORT:'3099',DATA_DIR:dir,GROQ_API_KEY:''},stdio:['ignore','pipe','pipe']});
  await new Promise((resolve,reject)=>{proc.stdout.once('data',resolve);proc.once('error',reject);});
  assert.equal((await call('/me')).status,200);
  assert.equal((await call('/projects')).data.length,1);
