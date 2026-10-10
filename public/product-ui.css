@@ -52,3 +52,5 @@
 @media(max-width:700px){.shell .studio-workspace .project-type-tabs button{font-size:12px;padding:12px 4px;min-height:52px;white-space:normal;line-height:1.4}}
 @media(prefers-reduced-motion:reduce){.project-type-tabs .type-slider,.shell .studio-workspace .project-type-tabs button{transition:none}.project-type-tabs button.selected span{animation:none}}
 .project-type-tabs button span{display:inline-flex;align-items:center;justify-content:center}
+
+.backend-summary{padding:20px 28px;border-top:1px solid var(--line);background:var(--surface-soft)}.backend-summary summary{cursor:pointer;font-size:14px;font-weight:650;color:var(--accent-text)}.shell .backend-summary p{font-size:13px;line-height:1.7;margin:14px 0 0}.backend-summary>div{max-width:920px}@media(max-width:700px){.backend-summary{padding:18px}}

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test tests/*.test.js",
-    "build": "node --check server.js && node --check public/app.js && node --check lib/auth.js && node --check public/login-ui.js && node --check lib/source-export.js"
+    "build": "node --check server.js && node --check public/app.js && node --check lib/auth.js && node --check public/login-ui.js && node --check lib/source-export.js && node --check lib/fullstack-project.js && node --check lib/generated-api.js && node --check lib/generated-client.js"
   },
   "engines": {
     "node": "24.x"
