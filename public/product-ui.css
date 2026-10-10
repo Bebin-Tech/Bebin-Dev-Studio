@@ -40,3 +40,15 @@
 .shell .source-download{display:inline-flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;min-height:48px;font-size:14px;font-weight:600;padding:13px 20px;border-radius:12px}
 @media(max-width:700px){.shell .studio-workspace{gap:24px}.shell .studio-workspace .panelhead{padding:22px 18px;flex-wrap:wrap}.shell .studio-workspace .panelbody{padding:20px 18px}.studio-panel-title{gap:12px}.shell .studio-panel-title h1,.shell .studio-panel-title h2{font-size:25px}.shell .studio-panel-title p{font-size:13px}.shell .studio-workspace .options{grid-template-columns:1fr;gap:0}.shell .studio-workspace .tabs{gap:8px}.shell .studio-workspace .tabs button{padding:10px 12px;flex:1;white-space:nowrap}.shell .studio-workspace textarea#prompt{font-size:16px;padding:16px;min-height:210px}.shell .studio-workspace .generate .primary{width:100%}.shell .studio-workspace .preview{padding:12px;min-height:420px}.shell .studio-workspace .preview iframe{height:620px}.shell .studio-workspace .previewfooter{padding:18px}.shell .source-download{width:100%}.shell .studio-workspace .previewbar{width:100%}.shell .studio-workspace .previewbar button{flex:1}}
 @media(prefers-reduced-motion:reduce){.shell .studio-workspace .preview iframe{transition:none}}
+
+/* A single moving surface makes project-type changes easy to follow. */
+.shell .studio-workspace .project-type-tabs{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;padding:4px;overflow:hidden;border-radius:15px}
+.project-type-tabs .type-slider{position:absolute;z-index:-1;inset:4px auto 4px 4px;width:calc((100% - 8px)/3);border-radius:11px;background:var(--active);border:1px solid var(--green);box-shadow:0 3px 12px #00000012;transform:translateX(calc(var(--selected-index,0)*100%));transition:transform 420ms cubic-bezier(.22,1,.36,1);pointer-events:none}
+.shell .studio-workspace .project-type-tabs button{position:relative;min-width:0;border:0;background:transparent;box-shadow:none;padding:14px 10px;min-height:56px;color:var(--muted);transition:color 200ms ease,transform 200ms ease}
+.shell .studio-workspace .project-type-tabs button:hover{background:transparent;color:var(--ink);transform:translateY(-1px)}
+.shell .studio-workspace .project-type-tabs button.selected{background:transparent;box-shadow:none;color:var(--accent-text);font-weight:700}
+.project-type-tabs button.selected span{animation:type-label-in 320ms ease-out}
+@keyframes type-label-in{from{opacity:.65;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.shell .studio-workspace .project-type-tabs button{font-size:12px;padding:12px 4px;min-height:52px;white-space:normal;line-height:1.4}}
+@media(prefers-reduced-motion:reduce){.project-type-tabs .type-slider,.shell .studio-workspace .project-type-tabs button{transition:none}.project-type-tabs button.selected span{animation:none}}
+.project-type-tabs button span{display:inline-flex;align-items:center;justify-content:center}
