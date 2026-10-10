@@ -51,3 +51,11 @@ The live Groq connection, enhancement and HTML generation passed on October 9, 2
 
 Vercel uses the Node application preset and Node 24. Configure TURSO_DATABASE_URL and TURSO_AUTH_TOKEN as server-only environment variables for persistent accounts, sessions, projects and versions. The app refuses to start on Vercel without remote storage. Local installations retain SQLite. Atomic writes and database-backed auth/AI limits work across instances. AI usage is limited to 40 requests per user and 200 globally per day. Configure GROQ_API_KEY and optionally GROQ_MODEL on the server. Never use NEXT_PUBLIC_ or VITE_ prefixes for credentials. The health endpoint /api/health checks database access without exposing credentials. Operational monitoring, backups, verified email/password recovery and large-scale load testing remain production follow-ups.
 
+
+## Built project source downloads
+
+In Studio, Create Your Project appears above Live Preview. Prompt starters and recent-project cards have been removed from this page; saved projects remain available in Projects. The preview supports desktop/mobile widths and source editing/history.
+
+Download source ZIP exports the exact saved preview HTML, with inline CSS, scripts and embedded assets, plus package.json, a dependency-free Node 24 local runner, a JavaScript syntax/build check, source checksum manifest and VS Code instructions. Extract, run `npm install`, `npm run build`, then `npm start` and open http://127.0.0.1:4173. The existing single HTML download remains available. The ZIP contains the previewed application, not Studio or its credentials. Demo interactions do not acquire live authentication, payments or email integrations by exporting; connect those services separately.
+
+Export tests build and run all 20 catalog preview documents, compare the saved HTML/checksum, reject invalid JavaScript, and verify authorization and preservation of source edits. The actual ERP project ZIP was also downloaded and built/run independently during browser QA.

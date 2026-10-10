@@ -4,6 +4,8 @@ import {spawn} from 'node:child_process';
 import {mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
+import {sourceProjectFiles} from '../lib/source-export.js';
+import {zip} from '../lib/zip.js';
 const dir=mkdtempSync(path.join(tmpdir(),'atlas-test-'));let proc,cookie='',other='';const base='http://127.0.0.1:3099';
 async function call(route,method='GET',body,session=cookie){const r=await fetch(base+'/api'+route,{method,headers:{'Content-Type':'application/json',Cookie:session},body:body?JSON.stringify(body):undefined});return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};}
 before(async()=>{proc=spawn(process.execPath,['server.js'],{env:{...process.env,AUTH_LEGACY_PASSWORD:'true',PORT:'3099',DATA_DIR:dir,GROQ_API_KEY:''},stdio:['ignore','pipe','pipe']});await new Promise((resolve,reject)=>{proc.stdout.once('data',resolve);proc.once('error',reject);proc.once('exit',code=>reject(Error('Server exited '+code)));});});
@@ -43,6 +45,8 @@ test('complete lifecycle, validation, account isolation, versions and export',as
  assert.equal((await call('/projects/'+pid+'/source','PUT',{html:original},other)).status,404);
  const copy=await call('/projects/'+pid+'/duplicate','POST');assert.equal(copy.status,200);assert.match((await call('/projects/'+copy.data.id)).data.name,/copy/);await call('/projects/'+copy.data.id,'DELETE');
  const download=await fetch(base+'/api/projects/'+pid+'/export',{headers:{Cookie:cookie}});assert.equal(download.status,200);assert.match(download.headers.get('content-disposition'),/attachment/);assert.match(await download.text(),/<!doctype html>/);
+ const sourceZip=await fetch(base+'/api/projects/'+pid+'/download',{headers:{Cookie:cookie}});assert.equal(sourceZip.status,200);assert.equal(sourceZip.headers.get('content-type'),'application/zip');assert.match(sourceZip.headers.get('content-disposition'),/attachment/);assert.deepEqual(Buffer.from(await sourceZip.arrayBuffer()),zip(sourceProjectFiles((await call('/projects/'+pid)).data)));
+ assert.equal((await fetch(base+'/api/projects/'+pid+'/download',{headers:{Cookie:other}})).status,404);assert.equal((await fetch(base+'/api/projects/'+pid+'/download')).status,401);assert.equal((await call('/projects/'+pid+'/download','DELETE')).status,405);assert.equal((await call('/projects/'+pid)).status,200);
  const origin=await fetch(base+'/api/projects/'+pid,{method:'DELETE',headers:{Cookie:cookie,Origin:'https://evil.example'}});assert.equal(origin.status,403);
  const escaped=await call('/generate','POST',{prompt:'Create a website containing <script>alert(1)</script>'});assert.match(escaped.data.html,/&lt;script&gt;/);
  assert.equal((await call('/generate','POST',{prompt:'Create a professional landing page',mode:'ai'})).status,400);
