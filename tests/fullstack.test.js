@@ -37,6 +37,9 @@ test('AI specifications are parsed, validated and cannot introduce executable ba
  assert.throws(()=>validateAppSpec({...spec,integrations:['stripe']}),/Unsupported integration/);
  assert.throws(()=>assertSupportedBrief('Build a shop accepting Stripe payments'),/does not yet implement/);
  assert.doesNotThrow(()=>assertSupportedBrief('Build a shop with unpaid orders'));
+ assert.throws(()=>assertSupportedBrief('Build a Flutter Notes app for Android'),/framework-specific/);
+ assert.throws(()=>assertSupportedBrief('Create a food donation app with React frontend'),/framework-specific/);
+ assert.doesNotThrow(()=>assertSupportedBrief('Build a mobile responsive notes web app'));
  assert.throws(()=>validateRecord(spec.collections[0],{unknown:'value'}),/Unknown/);
  await assert.rejects(groqComplete('CRM',{application:true,instruction:appSpecInstruction,key:'fake',fetcher:async()=>({ok:true,json:async()=>({choices:[{message:{content:'<script>malicious()</script>'}}]})})}),/invalid application specification/);
 });
