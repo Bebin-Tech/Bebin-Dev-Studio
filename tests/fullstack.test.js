@@ -13,7 +13,7 @@ const cases=[['Build a professional landing page','landing page'],['Build a prod
 test('complete generated projects build, migrate and pass independent end-to-end tests',()=>{
  for(const [brief,type]of cases){
   const spec=defaultAppSpec(brief,type,'Independent '+type,'#635bff'),html=applicationHTML(spec),files=fullstackProjectFiles({html,app_spec:JSON.stringify(spec)});
-  assert.equal(files['preview-source.html'],html);assert.equal(files['.env.example'].includes('ADMIN_PASSWORD=\n'),true);
+  assert.equal(files['preview-source.html'],html);assert.match(html,/management-panel/);assert.equal(files['.env.example'].includes('ADMIN_PASSWORD=\n'),true);
   let reconstructed=files['public/index.html'];
   reconstructed=reconstructed.replace(/<link rel="stylesheet" href="([^"]+)">/g,(_,file)=>'<style>'+files['public/'+file]+'</style>');
   reconstructed=reconstructed.replace(/<script([^>]*) src="([^"]+)"><\/script>/g,(_,attrs,file)=>'<script'+attrs+'>'+files['public/'+file]+'</script>');

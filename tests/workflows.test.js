@@ -51,6 +51,7 @@ test('complete lifecycle, validation, account isolation, versions and export',as
  const runtimePath='/projects/'+pid+'/runtime';
  const runtimeCall=(path,method='GET',body,session=cookie)=>call(runtimePath,'POST',{path,method,body},session);
  assert.equal((await runtimeCall('/api/config')).data.preview,true);
+ const automatic=await runtimeCall('/api/auth/me');assert.equal(automatic.data.user.name,'Studio preview');assert.equal(automatic.data.user.role,'admin');assert.equal(automatic.data.sessionToken,undefined);assert.equal((await runtimeCall('/api/auth/preview','POST',{})).status,404);
  assert.equal((await runtimeCall('/api/health','GET',null,other)).status,404);
  const previewAccount=await runtimeCall('/api/auth/register','POST',{email:'preview@example.test',password:'PreviewPassword123!',name:'Preview operator'});assert.equal(previewAccount.status,200);assert.equal(previewAccount.data.user.role,'admin');assert.equal(previewAccount.data.sessionToken,undefined);
  const previewProduct=await runtimeCall('/api/records/products','POST',{name:'Coffee beans',description:'Fresh roast',price:29,category:'Coffee'});assert.equal(previewProduct.status,201);

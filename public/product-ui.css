@@ -232,3 +232,5 @@ html[data-theme=aurora] .shell { --shadow: 0 8px 28px #09071922; background: tra
   .shell .breadcrumb { font-size: 12px; }
   .shell .topbar .primary { font-size: 12px; padding-inline: 10px; }
 }
+
+.shell .generation-help{font-size:13px;line-height:1.65;color:var(--muted);margin:12px 0 0;max-width:780px}
