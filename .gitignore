@@ -8,3 +8,7 @@ public/screenshots/*-editorial.jpg
 public/screenshots/*-midnight.jpg
 public/screenshots/*-vivid.jpg
 qa/video-tools/
+
+lib/react-preview.bundle.js
+lib/react-preview.bundle.css
+lib/react-client/styles.css

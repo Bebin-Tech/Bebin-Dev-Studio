@@ -67,6 +67,12 @@ test('complete lifecycle, validation, account isolation, versions and export',as
  const origin=await fetch(base+'/api/projects/'+pid,{method:'DELETE',headers:{Cookie:cookie,Origin:'https://evil.example'}});assert.equal(origin.status,403);
  const escaped=await call('/generate','POST',{prompt:'Create a website containing <script>alert(1)</script>'});assert.match(escaped.data.html,/\\u003cscript>/);
  assert.equal((await call('/generate','POST',{prompt:'Create a professional landing page',mode:'ai'})).status,400);
+ const reactProject=await call('/generate','POST',{prompt:'Build a React task tracker with editable tasks',name:'React workflow QA',type:'web app',framework:'react'});assert.equal(reactProject.status,200);assert.match(reactProject.data.html,/data-framework="react"/);
+ const reactId=reactProject.data.id;assert.equal(JSON.parse((await call('/projects/'+reactId)).data.app_spec).framework,'react');
+ assert.equal((await call('/projects/'+reactId+'/source','PUT',{html:reactProject.data.html})).status,409);
+ assert.equal((await call('/projects/'+reactId+'/runtime','POST',{path:'/api/auth/me',method:'GET'})).data.user.name,'Studio preview');
+ assert.equal((await fetch(base+'/api/projects/'+reactId+'/download',{headers:{Cookie:cookie}})).status,200);
+ await call('/projects/'+reactId,'DELETE');
  assert.equal((await call('/projects/'+pid,'DELETE')).status,200);assert.equal((await call('/projects/'+pid)).status,404);
  assert.equal((await call('/logout','POST')).status,200);assert.equal((await call('/me')).status,401);
  const login=await call('/login','POST',{email:'creator@example.com',password:'LongPassword123!'});assert.equal(login.status,200);cookie=login.cookie;assert.equal((await call('/projects')).data.length,1);

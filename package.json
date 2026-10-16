@@ -6,14 +6,19 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test tests/*.test.js",
-    "build": "node --check server.js && node --check public/app.js && node --check lib/auth.js && node --check public/login-ui.js && node --check lib/source-export.js && node --check lib/fullstack-project.js && node --check lib/generated-api.js && node --check lib/generated-client.js"
+    "build": "node scripts/build-react-preview.mjs && node --check server.js && node --check public/app.js && node --check lib/auth.js && node --check public/login-ui.js && node --check lib/source-export.js && node --check lib/fullstack-project.js && node --check lib/generated-api.js && node --check lib/generated-client.js",
+    "pretest": "node scripts/build-react-preview.mjs",
+    "prestart": "node scripts/build-react-preview.mjs"
   },
   "engines": {
     "node": "24.x"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",
+    "esbuild": "0.28.2",
     "jose": "^6.2.12",
-    "nodemailer": "^10.0.16"
+    "nodemailer": "^10.0.16",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }
