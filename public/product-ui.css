@@ -54,3 +54,128 @@
 .project-type-tabs button span{display:inline-flex;align-items:center;justify-content:center}
 
 .backend-summary{padding:20px 28px;border-top:1px solid var(--line);background:var(--surface-soft)}.backend-summary summary{cursor:pointer;font-size:14px;font-weight:650;color:var(--accent-text)}.shell .backend-summary p{font-size:13px;line-height:1.7;margin:14px 0 0}.backend-summary>div{max-width:920px}@media(max-width:700px){.backend-summary{padding:18px}}
+
+/* Interface refinement: presentation only; shared across the existing modules. */
+.shell {
+  --shadow: 0 1px 2px #10251a05, 0 8px 28px #10251a04;
+  --ui-radius: 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  background: var(--bg);
+}
+.shell .content { max-width: 1380px; margin-inline: auto; padding: 36px 40px 24px; }
+.shell .sidebar { padding: 28px 18px 20px; gap: 32px; }
+.shell .sidebar-brand { padding: 0 8px 24px; border-bottom: 1px solid var(--line); }
+.shell .sidebar .brand { font-size: 15px; letter-spacing: -.45px; }
+.shell .sidebar .brand-logo { width: 40px; height: 40px; border-radius: 11px; }
+.shell .nav { gap: 8px; }
+.shell .nav button { min-height: 48px; padding: 12px 14px; border-radius: 12px; font-size: 14px; }
+.shell .nav button .ui-icon { width: 19px; height: 19px; stroke-width: 1.7; }
+.shell .nav button.active { border-color: transparent; box-shadow: inset 3px 0 0 var(--green); }
+html[dir=rtl] .shell .nav button.active { box-shadow: inset -3px 0 0 var(--green); }
+.shell .nav-count { border-radius: 7px; min-width: 24px; line-height: 24px; font-size: 11px; }
+.shell .sidebar-service { padding: 16px 14px; border-radius: 13px; background: linear-gradient(135deg,var(--active),var(--surface-soft)); }
+.shell .sidebar-service strong { font-size: 12px; }
+.shell .sidebar-service span:not(.status-dot) { font-size: 11px; }
+.shell .sidefoot { padding-top: 20px; align-items: center; }
+.shell .avatar { width: 38px; height: 38px; border-radius: 12px; background: var(--active); }
+.shell .sidebar-account strong { font-size: 13px; }
+.shell .topbar { height: 76px; padding-inline: 40px; }
+.shell .breadcrumb { font-size: 13px; }
+.shell .topbar .primary { min-height: 42px; padding: 11px 17px; border-radius: 10px; }
+.shell .connection-badge { font-size: 12px; }
+.shell .page-heading, .shell .catalog-heading { margin-bottom: 30px; align-items: flex-start; }
+.shell h1 { font-size: clamp(28px,3vw,36px); font-weight: 650; letter-spacing: -1.1px; }
+.shell h2 { font-size: 18px; font-weight: 620; }
+.shell p { font-size: 14px; line-height: 1.7; }
+.shell .page-heading p, .shell .catalog-heading p { max-width: 640px; }
+.shell input, .shell select, .shell textarea { min-height: 46px; padding: 12px 14px; border-radius: 11px; font-size: 14px; }
+.shell input:hover, .shell select:hover, .shell textarea:hover { border-color: var(--muted); }
+.shell input:focus, .shell select:focus, .shell textarea:focus { border-color: var(--green); }
+.shell label { font-size: 13px; font-weight: 600; }
+.shell button, .shell .button-link { border-radius: 10px; min-height: 40px; font-size: 13px; }
+.shell button:disabled { opacity: .55; cursor: not-allowed; }
+.shell .icon-button { min-width: 38px; min-height: 38px; padding: 9px; }
+.shell .collection-panel, .shell .setting-card, .shell .catalog-card { border-radius: var(--ui-radius); box-shadow: var(--shadow); }
+.shell .collection-toolbar { padding: 20px 22px; gap: 16px; background: var(--surface); }
+.shell .search-field { max-width: 420px; }
+.shell .search-field>.ui-icon { top: 15px; inset-inline-start: 14px; }
+.shell .search-field .search { padding-inline-start: 42px; }
+.shell .collection-filters select { min-height: 46px; font-size: 13px; }
+.shell .project-table th { padding: 16px 24px; font-size: 11px; letter-spacing: .6px; }
+.shell .project-table td { padding: 22px 24px; }
+.shell .project-symbol { width: 42px; height: 42px; border-radius: 12px; }
+.shell .project-name { font-size: 14px; }
+.shell .table-project p { margin-top: 6px; font-size: 12px; }
+.shell .type-pill { display: inline-flex; padding: 5px 9px; border-radius: 7px; font-size: 11px; }
+.shell .table-date, .shell .collection-summary { font-size: 12px; }
+.shell .collection-summary { padding: 16px 24px; background: var(--surface-soft); }
+.shell .collection-empty { padding: 80px 24px; }
+.shell .collection-empty>.ui-icon { width: 42px; height: 42px; }
+.shell .settings-grid { gap: 24px; }
+.shell .setting-card { padding: 28px; }
+.shell .setting-header { gap: 14px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.shell .setting-header p, .shell .setting-note { font-size: 12px!important; }
+.shell .theme-option { border-radius: 12px; padding: 10px; }
+.shell .theme-swatch { height: 78px; border-radius: 8px; }
+.shell .theme-label { font-size: 12px; }
+.shell .catalog-filters { border-radius: var(--ui-radius); padding: 22px; gap: 18px 22px; box-shadow: var(--shadow); }
+.shell .catalog-meta { padding: 22px; }
+.shell .catalog-meta h3 { font-size: 18px; letter-spacing: -.4px; }
+.shell .catalog-meta p { font-size: 13px; }
+.shell .catalog-thumb { height: 210px; }
+.shell .catalog-card:focus-within { border-color: var(--green); }
+.shell .tags span { font-size: 11px; padding: 5px 8px; border-radius: 6px; }
+.shell .studio-workspace { gap: 28px; }
+.shell .studio-workspace .panel { border-radius: var(--ui-radius); box-shadow: var(--shadow); }
+.shell .studio-workspace .panelhead { background: var(--surface); padding: 26px 30px; }
+.shell .studio-panel-title .step { width: 44px; height: 44px; background: var(--active); color: var(--accent-text); border: 1px solid var(--line); }
+.shell .studio-panel-title h1, .shell .studio-panel-title h2 { font-size: clamp(25px,2.5vw,32px); }
+.shell .studio-workspace .panelbody { padding: 6px 30px 28px; }
+.shell .studio-workspace .project-type-tabs { margin-top: 22px; }
+.shell .studio-workspace textarea#prompt { min-height: 190px; font-size: 16px; background: var(--surface-soft); line-height: 1.75; }
+.shell .studio-workspace .generate .primary { box-shadow: 0 4px 12px #10251a12; }
+.shell .studio-workspace .preview { background: var(--surface-soft); }
+.shell .studio-workspace .preview.empty { background: radial-gradient(ellipse at 50% 35%,var(--active),transparent 65%),var(--surface-soft); }
+.shell .studio-workspace .preview-symbol { width: 72px; height: 72px; border-radius: 22px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+.shell .studio-workspace .preview.empty h2 { font-size: clamp(28px,3vw,38px); letter-spacing: -1px; }
+.shell .studio-workspace .previewfooter .source-download { color: #fff; }
+html[data-theme=dark] .shell .studio-workspace .previewfooter .source-download,
+html[data-theme=aurora] .shell .studio-workspace .previewfooter .source-download { color: #142029; }
+.shell .footer { padding-top: 24px; margin-top: 32px; font-size: 12px; }
+html[data-theme=dark] .shell { --shadow: 0 8px 28px #00000012; }
+html[data-theme=aurora] .shell { --shadow: 0 8px 28px #09071922; background: transparent; }
+@media(max-width:1100px) {
+  .shell .content { padding: 28px 24px 20px; }
+  .shell .topbar { padding-inline: 24px; }
+  .shell .collection-toolbar { flex-wrap: wrap; }
+  .shell .collection-filters { flex-wrap: wrap; }
+  .shell .catalog-thumb { height: 185px; }
+}
+@media(max-width:900px) {
+  .shell .sidebar { width: 270px; }
+  .shell .sidebar-brand { padding: 0 4px 20px; }
+  .shell .settings-grid { grid-template-columns: minmax(0,1fr); }
+}
+@media(max-width:700px) {
+  .shell .content { padding: 24px 16px 18px; }
+  .shell .topbar { height: 68px; padding-inline: 16px; }
+  .shell .topbar .primary { padding: 10px 12px; }
+  .shell .top-actions { gap: 8px; }
+  .shell .page-heading, .shell .catalog-heading { gap: 14px; flex-wrap: wrap; }
+  .shell .studio-workspace .panelhead { padding: 22px 18px; }
+  .shell .studio-workspace .panelbody { padding: 0 18px 22px; }
+  .shell .studio-workspace .project-type-tabs { margin-top: 18px; }
+  .shell .studio-panel-title .step { width: 36px; height: 36px; border-radius: 10px; }
+  .shell .studio-panel-title h1, .shell .studio-panel-title h2 { font-size: 24px; }
+  .shell .studio-workspace .previewfooter { gap: 12px; }
+  .shell .collection-toolbar, .shell .catalog-filters, .shell .setting-card { padding: 18px; }
+  .shell .collection-toolbar .search-field { max-width: none; flex-basis: 100%; }
+  .shell .collection-filters { width: 100%; gap: 8px; }
+  .shell .collection-filters select { max-width: none; width: 100%; flex: 1; min-width: 0; }
+  .shell .catalog-thumb { height: 210px; }
+  .shell .theme-swatch { height: 62px; }
+  .shell .theme-label { font-size: 11px; }
+  .shell .footer { align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+}
+.shell input::placeholder, .shell textarea::placeholder { color: var(--muted); opacity: .85; }
