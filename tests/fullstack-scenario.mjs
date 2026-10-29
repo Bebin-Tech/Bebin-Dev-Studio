@@ -8,6 +8,7 @@ export async function verifyRuntime(dir,driver){
  try{
   await db.exec(generatedSchema);const spec=defaultAppSpec('CRM with email notifications and AI assistant','web app');let mailRequest,aiRequest;
   const api=createGeneratedAPI({db,env:{RESEND_API_KEY:'test-mail-secret',EMAIL_FROM:'sender@example.test',ADMIN_EMAIL:'owner@example.test',GROQ_API_KEY:'test-ai-secret'},fetcher:async(url,options)=>{if(url.includes('resend')){mailRequest=JSON.parse(options.body);return {ok:true};}aiRequest=JSON.parse(options.body);return {ok:true,json:async()=>({choices:[{message:{content:'Test answer'}}]})};}});
+  const disabled=await api.request({space:'disabled-integrations',spec:{...spec,integrations:[]},path:'/api/config'});assert.equal(disabled.body.integrations.email,false);assert.equal(disabled.body.integrations.ai,false);
   const request=(space,route,method='GET',body,hash)=>api.request({space,spec,path:route,method,body,sessionHash:hash,client:'test'});
   const account=await request('first','/api/auth/register','POST',{name:'Member',email:'member@example.test',password:'TestPassword123!'});const hash=sessionDigest(account.sessionToken);
   assert.equal((await request('second','/api/auth/me','GET',{},hash)).body.user,null);

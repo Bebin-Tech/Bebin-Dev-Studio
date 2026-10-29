@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {api} from './api.js';
+import {initialFieldValue, recordValues} from './record-values.js';
 
 function RecordEditor({module, record, onSave, onCancel, notify}) {
   const [busy, setBusy] = useState(false);
@@ -7,7 +8,7 @@ function RecordEditor({module, record, onSave, onCancel, notify}) {
     event.preventDefault();
     if (busy) return;
     const raw = Object.fromEntries(new FormData(event.currentTarget));
-    const values = Object.fromEntries(module.fields.map(field => [field.name, raw[field.name] === '' ? null : field.type === 'number' ? Number(raw[field.name]) : field.type === 'boolean' ? raw[field.name] === 'true' : raw[field.name]]));
+    const values = recordValues(module.fields, raw);
     setBusy(true);
     try { await api('/api/records/' + module.name + (record?.id ? '/' + record.id : ''), record?.id ? 'PUT' : 'POST', values); onSave(); }
     catch (error) { notify(error.message, true); }
@@ -16,7 +17,8 @@ function RecordEditor({module, record, onSave, onCancel, notify}) {
   return <form className="record-form" onSubmit={submit}>
     <h3 className="full">{record?.id ? 'Edit' : 'Add'} {module.label}</h3>
     {module.fields.map(field => <label key={field.name}>{field.label}
-      {field.type === 'select' || field.type === 'boolean' ? <select name={field.name} required={field.required} defaultValue={String(record?.[field.name] ?? (field.type === 'boolean' ? false : field.options[0]))}>
+      {field.type === 'select' || field.type === 'boolean' ? <select name={field.name} required={field.required} defaultValue={initialFieldValue(field, record?.[field.name])}>
+        {!field.required ? <option value="">Not set</option> : null}
         {(field.type === 'boolean' ? ['true', 'false'] : field.options).map(option => <option key={option} value={option}>{field.type === 'boolean' ? option === 'true' ? 'Yes' : 'No' : option}</option>)}
       </select> : field.type === 'text' && /content|notes|description|message/.test(field.name) ? <textarea name={field.name} maxLength={2000} required={field.required} defaultValue={record?.[field.name] ?? ''} /> : <input name={field.name} type={['email','number','date'].includes(field.type) ? field.type : 'text'} step={field.type === 'number' ? 'any' : undefined} maxLength={2000} required={field.required} defaultValue={record?.[field.name] ?? ''} />}
     </label>)}
