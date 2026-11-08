@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {api, embedded} from './api.js';
+import {accentForeground} from './record-values.js';
 import Account from './Account.jsx';
 import Records from './Records.jsx';
 import Store from './Store.jsx';
@@ -47,7 +48,7 @@ export default function App() {
     <div className="module-nav" role="group" aria-label="Data modules">{modules.map(module => <button key={module.name} aria-pressed={module.name === activeModule} onClick={() => setActiveModule(module.name)}>{module.label}</button>)}</div>
     <Records key={activeModule} moduleName={activeModule} module={spec.collections.find(module => module.name === activeModule)} notify={notify} version={version} onChanged={changed} view={spec.design?.views?.[activeModule]} />
   </> : <Account name={spec.name} signup={configuration.signup} onSignedIn={signedIn} notify={notify} />}</section>;
-  return <div style={{'--accent':spec.accent}} className={"generated-app layout-" + (spec.design?.layout || "editorial") + " palette-" + (spec.design?.palette || "forest")}>
+  return <div style={{'--accent':spec.accent,'--accent-ink':accentForeground(spec.accent)}} className={"generated-app layout-" + (spec.design?.layout || "editorial") + " palette-" + (spec.design?.palette || "forest")}>
     <header className="app-header"><a href="#home" className="brand"><span className="brand-symbol" aria-hidden="true">◈</span>{spec.name}</a><nav>
       <a href="#workspace" onClick={() => setManagementOpen(true)}>{spec.type === 'web app' ? 'Workspace' : 'Manage app'}</a>{spec.type === 'storefront' ? <a href="#store">Store</a> : null}{spec.type !== "web app" || spec.integrations.includes("email") ? <a href="#contact">Contact</a> : null}{user ? <button className="quiet" disabled={signingOut} onClick={signOut}>Sign out</button> : null}
     </nav></header>
