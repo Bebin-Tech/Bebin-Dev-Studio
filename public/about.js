@@ -1,0 +1,6 @@
+const toggle=document.querySelector('#site-menu'),nav=document.querySelector('#site-nav');
+const close=()=>{toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open menu');nav.classList.remove('open');};
+toggle.onclick=()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu');nav.classList.toggle('open',open);};
+nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',close));document.addEventListener('keydown',event=>{if(event.key==='Escape'){close();toggle.focus();}});
+matchMedia('(min-width:761px)').addEventListener('change',close);
+document.querySelector('#contact-draft').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget;if(!form.reportValidity())return;const data=new FormData(form);const subject='Project inquiry from '+String(data.get('name')).trim();const body='Name: '+data.get('name')+'\nReply email: '+data.get('email')+'\n\n'+data.get('details');location.href='mailto:bbebinr@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);const status=document.querySelector('#contact-status');status.hidden=false;status.textContent='Your email draft is ready. If your email app did not open, use the email or WhatsApp link above.';});

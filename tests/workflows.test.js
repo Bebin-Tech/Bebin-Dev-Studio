@@ -85,3 +85,12 @@ test('account and project data survive a server restart',async()=>{
  assert.equal((await call('/projects')).data.length,1);
  const login=await call('/login','POST',{email:'creator@example.com',password:'LongPassword123!'});assert.equal(login.status,200);
 });
+
+
+test('selected visual style overrides contradictory brief styling without changing the model',async()=>{
+ cookie=(await call('/login','POST',{email:'creator@example.com',password:'LongPassword123!'})).cookie;
+ const invalid=await call('/generate','POST',{prompt:'A dark task tracker with status and dates',type:'web app',visualStyle:'not-a-style'});assert.equal(invalid.status,400);
+ const result=await call('/generate','POST',{prompt:'A dark task tracker with status and dates',type:'web app',visualStyle:'Warm editorial',framework:'react'});assert.equal(result.status,200);
+ const project=(await call('/projects/'+result.data.id)).data,spec=JSON.parse(project.app_spec);
+ assert.equal(spec.design.layout,'editorial');assert.equal(spec.design.palette,'warm');assert.equal(spec.collections[0].name,'tasks');assert.equal(spec.design.views.tasks,'board');
+});

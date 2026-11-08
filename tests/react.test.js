@@ -9,7 +9,7 @@ import {applicationHTML, fullstackProjectFiles} from '../lib/fullstack-project.j
 import {reactFiles, readReactSource} from '../lib/react-source.js';
 
 test('React exports preserve JSX snapshots, compile the preview bundle and pass backend workflows', () => {
-  for (const [prompt,type] of [['React expense tracker with categories','web app'],['React education courses and students app','web app'],['React coffee catalog with unpaid orders','storefront']]) {
+  for (const [prompt,type] of [['React task project pipeline','web app'],['React appointment booking','web app'],['React portfolio editorial','web app'],['React expense tracker with categories','web app'],['React education courses and students app','web app'],['React coffee catalog with unpaid orders','storefront']]) {
     const spec = validateAppSpec({...defaultAppSpec(prompt,type,'React '+type),framework:'react'});
     const html = applicationHTML(spec);
     const files = fullstackProjectFiles({html,app_spec:JSON.stringify(spec)});
